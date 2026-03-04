@@ -1,0 +1,25 @@
+You are extracting event history from an uploaded document.
+
+Return ONLY valid JSON that matches this schema:
+
+{
+  "arrival_date": "YYYY-MM-DD | null",
+  "departure_date": "YYYY-MM-DD | null",
+  "hotels": [
+    {
+      "name": "string",
+      "total_block_rooms": "integer | null",
+      "picked_up_rooms": "integer | null",
+      "room_rate": "number | string | null",
+      "room_rate_currency": "string | null",
+      "notes": "string | null"
+    }
+  ]
+}
+
+Rules:
+- If the document uses a date range like "3/12-3/15/2025", interpret arrival_date as the first date and departure_date as the last date (ISO format).
+- For room_rate, preserve what you see (e.g. 189, 189.00, "$189", "USD 189", "189/night") rather than guessing.
+- If a field is unknown or not present, use null.
+- Hotels should be deduplicated by name as best as possible.
+- If the document contains multiple events, extract the one that looks like the main/primary event (or the first event) and mention ambiguity in notes.
